@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>
+            {% block title %}
+                VAT Calculator
+            {% endblock %}
+        </title>
+
+        {% block base_assets %}
+            {{ include('assets.html.twig') }}
+        {% endblock %}
+    </head>
+
+    <body>
+        {% block header %}
+            <header>
+                <nav class="navbar navbar-expand-lg bg-light">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="{{ path('index') }}">VAT Calculator</a>
+                    </div>
+                </nav>
+            </header>
+        {% endblock %}
+
+        {% block base_main_content %}
+            <div class="container text-center">
+               <div class="card text-center">
+                    <div class="card-header">
+                        Alex Dudley's VAT Calculator!
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">Please enter a currency value and a VAT percentage value</h5>
+                        <p class="card-text">The results from this calculation will be stored and displayed below. They will also be available as a CSV export.</p>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 offset-md-4">
+                            {% include 'form/calculation_form.html.twig' %}
+                        </div>
+                    </div>
+
+                    {% if history %}
+                        <div class=" card-footer p-3">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h5>Calculation History</h5>
+                                    </div>
+                                    <div class="col-md-2 offset-md-4">
+                                        <a class="btn btn-success" href="{{ path('export') }}">Export History</a>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a class="btn btn-danger" href="{{ path('clear-history') }}">Clear History</a>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <table class="table border table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Value</th>
+                                                <th scope="col">VAT</th>
+                                                <th scope="col">Inc. VAT</th>
+                                                <th scope="col">Excl. VAT</th>
+                                                <th scope="col">VAT Added</th>
+                                                <th scope="col">VAT Excluded</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {% for row in history %}
+                                                <tr>
+                                                    <th scope="row">{{ row.id }}</th>
+                                                    <td>{{ row.originalValue|format_currency('GBP') }}</td>
+                                                    <td>{{ row.vatPercentage }}%</td>
+                                                    <td>{{ row.valueIncVat|format_currency('GBP') }}</td>
+                                                    <td>{{ row.valueExclVat|format_currency('GBP') }}</td>
+                                                    <td>{{ row.amountOfVatAdded|format_currency('GBP') }}</td>
+                                                    <td>{{ row.amountOfVatExcluded|format_currency('GBP') }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endblock %}
+    </body>
+</html>

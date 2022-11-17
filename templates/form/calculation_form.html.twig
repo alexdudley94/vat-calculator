@@ -1,0 +1,9 @@
+{{ form_start(form, {'method': 'POST'}) }}
+    <div class="input-group mb-3">
+        {{ form_label(form.value, '£', {'label_attr': {'class': 'input-group-text'} }) }}
+        {{ form_widget(form.value) }}
+        {{ form_widget(form.vatPercentage) }}
+        {{ form_label(form.vatPercentage, '%', {'label_attr': {'class': 'input-group-text'}}) }}
+    </div>
+    {{ form_widget(form.calculate) }}
+{{ form_end(form) }}
